@@ -22,15 +22,16 @@ conf.verbose = 3
 pcap_file_path = ""
 iface = ""
 src_port = -1
+dst_port = -1
 #acks
 ACK = 0x10
 #client closing the connection
 RSTACK = 0x14
-src_ip = "10.33.108.79"
-src_mac = "00:50:56:bc:fc:50"
+src_ip = "127.0.0.1"
+src_mac = "00:00:00:00:00:00"
 
-dest_ip = "10.33.2.204"
-gateway = "cc:8e:71:14:62:7e" 
+dest_ip = "127.0.0.1"
+gateway = "00:00:00:00:00:00" 
 
 
 
@@ -94,7 +95,7 @@ def replay(infile, inface):
             eth.dst = gateway
             tcp.sport = src_port
 
-            if tcp.dport == 4189:                
+            if tcp.dport == dst_port:                
                 if (tcp.flags & ACK) or (tcp.flags == RSTACK):
                     tcp.ack = recvSeqNum + payload_len
                     print("[+] tcp number in sync..")
@@ -132,6 +133,7 @@ if __name__ == "__main__":
     parser.add_argument("-s", "--src", required = True, help = "source IP")
     parser.add_argument("-d", "--dst", required = True, help = "destination IP")
     parser.add_argument("--sport", type = int ,required=False, default = -1, help="source port as client")
+    parser.add_argument("--dport", type = int ,required=True, help = "destination port of tcp process")
     args = vars(parser.parse_args())
     pcap_file_path = args['pcap']
     iface = args['iface']
@@ -141,4 +143,5 @@ if __name__ == "__main__":
         src_port = args['sport']
     else:
         src_port = 17079            #TODO: add random port choosing logic
+    dst_port = args['dport']
     replay(pcap_file_path,iface)

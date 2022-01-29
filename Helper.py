@@ -1,7 +1,7 @@
 from scapy.all import *
 
 
-def convert_sll_to_ether(pkt, smac = "00:50:56:bc:ec:6a", dmac = "ff:ff:ff:ff:ff:ff"):
+def convert_sll_to_ether(pkt, smac = "ff:ff:ff:ff:ff:ff", dmac = "ff:ff:ff:ff:ff:ff"):
 	ip_layer_packet = pkt.getlayer(IP)
 	ether_layer_packet = Ether(src = smac, dst = dmac)
 	return ether_layer_packet/ip_layer_packet

@@ -20,14 +20,14 @@ Yes probably you are right, I am not pro.. Show me how to do it better. A nice p
 
 ## usage
 ```bash
-./tcp-exec.py -f <path_to_pcap_file> -i <interface> -s source_ip -d destination_ip --sport=<source_port>
+./tcp-exec.py -f <path_to_pcap_file> -i <interface> -s source_ip -d destination_ip --sport=<source_port> --dport=<destination_port>
 ```
 
 ## help menu
 ```bash
 ./tcp-exec.py -h
 
-usage: tcp-exec.py [-h] -f PCAP -i IFACE -s SRC -d DST [--sport SPORT]
+usage: tcp-exec.py [-h] -f PCAP -i IFACE -s SRC -d DST [--sport SPORT] --dport DPORT
 
 tcpliveplay python script
 
@@ -39,11 +39,12 @@ optional arguments:
   -s SRC, --src SRC     source IP
   -d DST, --dst DST     destination IP
   --sport SPORT         source port as client
+  --dport DPORT         destination port of tcp process
 ```
 
 ## Examples
 ```bash
-./tcpexec.py -f /path/to/file.pcap -i lo -s 127.0.0.1 -d 127.0.0.1 --sport=9002
+./tcpexec.py -f /path/to/file.pcap -i lo -s 127.0.0.1 -d 127.0.0.1 --sport=9002 --dport=4189
 ```
 
 The above example will play the tcp packets between 127.0.0.1:9002(us) and 127.0.0.1:4189(server). Obviously some process must be in listen mode at port 4189 to accept the packet and send us the acknowledgment.
