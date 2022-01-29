@@ -15,6 +15,9 @@ This script is used to simulate tcp connections from the captured tcp traffic on
 - scapy
 
 
+## What a noobish python implemetation
+Yes probably you are right, I am not pro.. Show me how to do it better. A nice pull request might cheer me up :)
+
 ## usage
 ```bash
 ./tcp-exec.py -f <path_to_pcap_file> -i <interface> -s source_ip -d destination_ip --sport=<source_port>
