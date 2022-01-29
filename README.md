@@ -37,3 +37,10 @@ optional arguments:
   -d DST, --dst DST     destination IP
   --sport SPORT         source port as client
 ```
+
+## Examples
+```bash
+./tcpexec.py -f /path/to/file.pcap -i lo -s 127.0.0.1 -d 127.0.0.1 --sport=9002
+```
+
+The above example will play the tcp packets between 127.0.0.1:9002(us) and 127.0.0.1:4189(server). Obviously some process must be in listen mode at port 4189 to accept the packet and send us the acknowledgment.
