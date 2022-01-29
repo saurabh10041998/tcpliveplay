@@ -47,4 +47,9 @@ The above example will play the tcp packets between 127.0.0.1:9002(us) and 127.0
 
 ## Tasks to be established
 
-- [ ] sample checkbox
+- [x] Replaying the single tcp stream on interface
+- [ ] Smart selection of the interface based on the source IP
+- [ ] Smart selection between whether to use layer 2 routing or layer 3 routing
+- [ ] Grabbing mac and ip of interface 
+- [ ] if layer 2 routing used, calculate the next hop mac
+- [ ] can we simulate multiple TCP stream ??
