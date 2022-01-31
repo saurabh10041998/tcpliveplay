@@ -40,3 +40,10 @@ def convert_gre_tun_to_ip_batch_online(pkt_lst):
 		modified_pkt = convert_gre_tun_to_ip(p)
 		modified_pkt_lst.append(modified_pkt)
 	return modified_pkt_lst
+
+
+# *****************************************************************
+
+		# TODO: extension to other types of protocol possible
+
+# *****************************************************************

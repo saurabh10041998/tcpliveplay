@@ -95,6 +95,7 @@ def replay(infile, inface):
             eth.dst = gateway
             tcp.sport = src_port
 
+            ### filtering packets to destination process ###
             if tcp.dport == dst_port:                
                 if (tcp.flags & ACK) or (tcp.flags == RSTACK):
                     tcp.ack = recvSeqNum + payload_len
