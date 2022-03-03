@@ -20,6 +20,9 @@ Yes probably you are right, I am not pro.. Show me how to do it better. A nice p
 
 ## usage
 ```bash
+git clone https://github.com/saurabh10041998/tcpliveplay.git
+cd tcpliveplay
+./tcp-exec.py -h       # help menu
 ./tcp-exec.py -f <path_to_pcap_file> -i <interface> -s source_ip -d destination_ip --sport=<source_port> --dport=<destination_port>
 ```
 
