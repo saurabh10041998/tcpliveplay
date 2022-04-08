@@ -3,6 +3,7 @@ from scapy.all import *
 import sys
 import random
 import argparse
+import os
 from Helper import convert_gre_tun_to_ip_batch_online,convert_sll_to_ether_batch_online
 
 """
@@ -122,10 +123,14 @@ def replay(infile, inface):
         i += len(list_packets)
         print("[+] sending", i, "Packet")
         r, pl = sendpacket(list_packets, inface)
-            
 
-def printUsage(prog):
-    print("%s <pcapPath> <interface>" % prog)
+######## Setting the iptables rule to suppress the reset packet #######        
+def set_ip_tables_rule():
+    os.system(f"iptables -A OUTPUT -p tcp --tcp-flags RST RST -s {src_ip} -d {dest_ip} --dport {dst_port} -j DROP")
+
+def clear_ip_tables_rule():
+    os.system(f"iptables -D OUTPUT -p tcp --tcp-flags RST RST -s {src_ip} -d {dest_ip} --dport {dst_port} -j DROP")
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description = "tcpliveplay python script")
@@ -145,4 +150,6 @@ if __name__ == "__main__":
     else:
         src_port = 17079            #TODO: add random port choosing logic
     dst_port = args['dport']
+    set_ip_tables_rule()            # set the iptables rule.
     replay(pcap_file_path,iface)
+    clear_ip_tables_rule()          # clear the iptables rule
