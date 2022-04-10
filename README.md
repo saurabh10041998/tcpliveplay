@@ -52,6 +52,12 @@ optional arguments:
 
 The above example will play the tcp packets between 127.0.0.1:9002(us) and 127.0.0.1:4189(server). Obviously some process must be in listen mode at port 4189 to accept the packet and send us the acknowledgment.
 
+## Oh No!! script is not working, what should I do ??
+Please check that below things are taken care of
+1. Script must be run as root, since scapy requires root access.
+2. Source ip must be same as that of the interface on which you are replaying the packet ( This is just required to view the response sent by server)
+3. Your pcap file must have complete tcp stream ( at least SYN, ACK messages/packets to complete the handshake).
+
 ## Tasks to be established
 
 - [x] Replaying the single tcp stream on interface
