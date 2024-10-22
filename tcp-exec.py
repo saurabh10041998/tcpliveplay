@@ -5,11 +5,12 @@ import random
 import argparse
 import os
 from typing import Sequence
-from Helper import convert_gre_tun_to_ip_batch_online,convert_sll_to_ether_batch_online
+from Helper import convert_gre_tun_to_ip_batch_online
+from Helper import convert_sll_to_ether_batch_online
 
 """
-NOTE 
-    This script assumes that there is only 1 TCP stream in the PCAP file and that 
+NOTE
+    This script assumes that there is only 1 TCP stream in the PCAP file and that
     you wish to replay the role of the client
 
 """
@@ -33,7 +34,7 @@ src_ip = "127.0.0.1"
 src_mac = "00:00:00:00:00:00"
 
 dest_ip = "127.0.0.1"
-gateway = "00:00:00:00:00:00" 
+gateway = "00:00:00:00:00:00"
 
 
 
