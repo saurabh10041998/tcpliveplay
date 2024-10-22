@@ -4,6 +4,7 @@ import sys
 import random
 import argparse
 import os
+from typing import Sequence
 from Helper import convert_gre_tun_to_ip_batch_online,convert_sll_to_ether_batch_online
 
 """
@@ -132,7 +133,7 @@ def clear_ip_tables_rule():
     os.system(f"iptables -D OUTPUT -p tcp --tcp-flags RST RST -s {src_ip} -d {dest_ip} --dport {dst_port} -j DROP")
 
 
-if __name__ == "__main__":
+def main(Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description = "tcpliveplay python script")
     parser.add_argument("-f", "--pcap", required = True, help = "path to pcap file")
     parser.add_argument("-i", "--iface", required = True, help = "interface")
@@ -153,3 +154,7 @@ if __name__ == "__main__":
     set_ip_tables_rule()            # set the iptables rule.
     replay(pcap_file_path,iface)
     clear_ip_tables_rule()          # clear the iptables rule
+    return 0
+
+if __name__ == "__main__":
+    exit(main())
