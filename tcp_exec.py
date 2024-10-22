@@ -134,7 +134,7 @@ def clear_ip_tables_rule():
     os.system(f"iptables -D OUTPUT -p tcp --tcp-flags RST RST -s {src_ip} -d {dest_ip} --dport {dst_port} -j DROP")
 
 
-def main(Sequence[str] | None = None) -> int:
+def main(argv: Sequence[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description = "tcpliveplay python script")
     parser.add_argument("-f", "--pcap", required = True, help = "path to pcap file")
     parser.add_argument("-i", "--iface", required = True, help = "interface")
