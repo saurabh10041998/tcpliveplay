@@ -5,8 +5,8 @@ import random
 import argparse
 import os
 from typing import Sequence
-from Helper import convert_gre_tun_to_ip_batch_online
-from Helper import convert_sll_to_ether_batch_online
+from utils.gre import convert_gre_tun_to_ip_batch_online
+from utils.sll import convert_sll_to_ether_batch_online
 
 """
 NOTE
