@@ -1,14 +1,13 @@
-#! /usr/bin/python3
 from scapy.all import *
 import sys
 import random
 import argparse
 import os
-from Helper import convert_gre_tun_to_ip_batch_online,convert_sll_to_ether_batch_online
+from tcpliveplay.helper import convert_gre_tun_to_ip_batch_online, convert_sll_to_ether_batch_online
 
 """
-NOTE 
-    This script assumes that there is only 1 TCP stream in the PCAP file and that 
+NOTE
+    This script assumes that there is only 1 TCP stream in the PCAP file and that
     you wish to replay the role of the client
 
 """
@@ -32,7 +31,7 @@ src_ip = "127.0.0.1"
 src_mac = "00:00:00:00:00:00"
 
 dest_ip = "127.0.0.1"
-gateway = "00:00:00:00:00:00" 
+gateway = "00:00:00:00:00:00"
 
 
 
@@ -63,9 +62,9 @@ def sendpacket(list_packets, inface):
 
 def replay(infile, inface):
     ############ Initialization of the variables ################################
-    recvSeqNum = 0    
+    recvSeqNum = 0
     payload_len = 0
-    list_packets = []    
+    list_packets = []
     i = 0
     lst_packet = []
     ########### Checking the layers and applying the transformations ###################
@@ -85,10 +84,10 @@ def replay(infile, inface):
     for p in lst_packet:
         if 'IP' in p and 'TCP' in p:
             eth = p[Ether]
-            ip = p[IP]            
+            ip = p[IP]
             tcp = p[TCP]
 
-            ## modifying the quad ## 
+            ## modifying the quad ##
 
             ip.src = src_ip
             eth.src = src_mac
@@ -97,7 +96,7 @@ def replay(infile, inface):
             tcp.sport = src_port
 
             ### filtering packets to destination process ###
-            if tcp.dport == dst_port:                
+            if tcp.dport == dst_port:
                 if (tcp.flags & ACK) or (tcp.flags == RSTACK):
                     tcp.ack = recvSeqNum + payload_len
                     print("[+] tcp number in sync..")
@@ -106,11 +105,11 @@ def replay(infile, inface):
                 if tcp.flags & ACK:
                     print("[+] tcp acks", tcp.ack)
                 # recraft the packet for sending it on loopback interface.
-                modified_ip_packet = IP(p[IP].__bytes__()[0:p[IP].len])    # scrape the ethernet trailer 
+                modified_ip_packet = IP(p[IP].__bytes__()[0:p[IP].len])    # scrape the ethernet trailer
                 list_packets.append(modified_ip_packet)
                 continue
-            else:               
-                i += len(list_packets)            
+            else:
+                i += len(list_packets)
                 print("[+] Sending", i, "th Packet")
                 r, pl = sendpacket(list_packets, inface)
                 if r != -1:
@@ -124,7 +123,7 @@ def replay(infile, inface):
         print("[+] sending", i, "Packet")
         r, pl = sendpacket(list_packets, inface)
 
-######## Setting the iptables rule to suppress the reset packet #######        
+######## Setting the iptables rule to suppress the reset packet #######
 def set_ip_tables_rule():
     os.system(f"iptables -A OUTPUT -p tcp --tcp-flags RST RST -s {src_ip} -d {dest_ip} --dport {dst_port} -j DROP")
 
@@ -132,7 +131,9 @@ def clear_ip_tables_rule():
     os.system(f"iptables -D OUTPUT -p tcp --tcp-flags RST RST -s {src_ip} -d {dest_ip} --dport {dst_port} -j DROP")
 
 
-if __name__ == "__main__":
+def main():
+    global pcap_file_path, iface, src_ip, dest_ip, src_port, dst_port
+
     parser = argparse.ArgumentParser(description = "tcpliveplay python script")
     parser.add_argument("-f", "--pcap", required = True, help = "path to pcap file")
     parser.add_argument("-i", "--iface", required = True, help = "interface")
@@ -153,3 +154,7 @@ if __name__ == "__main__":
     set_ip_tables_rule()            # set the iptables rule.
     replay(pcap_file_path,iface)
     clear_ip_tables_rule()          # clear the iptables rule
+
+
+if __name__ == "__main__":
+    main()
